@@ -1,0 +1,18 @@
+M = readmatrix('crypto-data-vals.csv')
+
+c = transpose( M(1:end ,size(M,2)))
+profit_moneda1 = M(1:end ,size(M,2)-1)
+profit_moneda2 = M(1:end ,size(M,2)-2)
+profit_moneda3 = M(1:end ,size(M,2)-3)
+vec = [] % REST1
+lim_horas = rand(size(M,1),1)*24 %hi's 
+for i = 1 :size(profit_moneda3,1)
+    vec = [vec profit_moneda1(i)/24 profit_moneda2(i)/24 profit_moneda3(i)/24] 
+    %vec2 = [vec profit_moneda1(i) profit_moneda2(i) profit_moneda3(i)] 
+end
+h = ones(1,size(M,1))
+matrix_rest_maq = diag(h)% REST2
+vec_tot_horas = h % REST3
+
+matrix_rest = [vec:]
+    
