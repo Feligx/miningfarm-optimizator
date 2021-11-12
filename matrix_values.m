@@ -7,6 +7,7 @@ M = readmatrix('crypto-data-vals.csv')
 %inputs dados en la entrega final por el ususario en un csv
 prompt = 'Ingrese la ganancia minima'
 min_profit = input(prompt)
+disp(size(M,1))
 prompt = 'Ingrese las horas de trabajo maximas diarias'
 daily_hours = input(prompt)*size(M,1) %Hacer que cada xi no sea mayor a 18
 
