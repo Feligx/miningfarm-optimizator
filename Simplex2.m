@@ -7,14 +7,12 @@ elseif respuesta == 2
 	modo_silencioso = 0;
 end
 
-
-
 %Entrada datos del problema 
 max_min = 1; %1 para minimizacion 0 para maximizacion
-c = [5.001 5.02 5.0012 25.052 25.038 25.022]; %Coeficiente de costos
-matriz_A = [7.01 7.1 7 13.5 13.5 13;1 1 1 0 0 0;0 0 0 1 1 1; 1 1 1 1 1 1]; %sin formato estandar
-b = [200;20;10;100]; 
-desigualdades = [-1;1;1;1]; % <= corresponde a 1, = corresponde a 0, >= corresponde a -1
+c = c; %Coeficiente de costos
+matriz_A = matrix_rest; %sin formato estandar
+b = vec_desigualdades; 
+desigualdades = vec_desigualdades_orientacion; % <= corresponde a 1, = corresponde a 0, >= corresponde a -1
 
 Ax_b = [matriz_A desigualdades b];
 no_variables = size(c,2);
@@ -211,3 +209,9 @@ while sol_optima ~= true
 end
 
 disp(X([1:no_variables]));
+
+
+
+
+
+
