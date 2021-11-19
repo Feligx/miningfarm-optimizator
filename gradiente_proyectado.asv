@@ -1,0 +1,14 @@
+%Dado f, A, b, X0 Donde A es la matriz de restricciones, b es el lado
+%derecho de las restricciones 
+%Paso 0 Encontrar w y Aw
+%Quiero reemplazar en cada restriccion y la que de 0 esa es la que esta
+%activa para eso cada fila de W son los coeficientes con sus x[s
+%respectivos e igualados al b
+num_rest = size(A, 1): %Cantidad e filas en la matriz A
+for i=1: num_rest
+    if i == w()
+end
+Aw = A(1,i) %Que me traiga la fila de la i que es la activa, esto en un for y sale
+
+
+%Paso 1 Calcular proyector y direccion
