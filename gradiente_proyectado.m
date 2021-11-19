@@ -7,7 +7,20 @@
 num_rest = size(A, 1): %Cantidad e filas en la matriz A
 %Revisa cuales son las rest activas:
 
+function[x0 = X0,restriccion] = evaluar(valor_evaluado)%Inicializo la x para que no tenga que pedirla al usario ni poonerla cuando llame la funcion
+    valor_evaluado = %Poner que reemplace los x[s del punto inicial para poder calcular y sale
+end
 
+matriz_A = matrix_rest; %sin formato estandar
+X = rest_ig_desig %Vector columna con cada coponente siendo una restricci[on sin sus coeficientes no tengo muy claro esto
+b = vec_desigualdades; 
+desigualdades = vec_desigualdades_orientacion; % <= corresponde a 1, = corresponde a 0, >= corresponde a -1
+
+Ax_b = [matriz_A desigualdades b];
+
+for i=1: size(X,1) %Numero de rest
+    if valor_evaluado(X0,) %La fila i evaluada en el x inicial
+end
 
 %Esto de aca abajo crea Aw
 for i=1: num_rest

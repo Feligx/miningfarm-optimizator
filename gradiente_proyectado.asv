@@ -5,10 +5,21 @@
 %activa para eso cada fila de W son los coeficientes con sus x[s
 %respectivos e igualados al b
 num_rest = size(A, 1): %Cantidad e filas en la matriz A
+%Revisa cuales son las rest activas:
+
+matriz_A = matrix_rest; %sin formato estandar
+b = vec_desigualdades; 
+desigualdades = vec_desigualdades_orientacion; % <= corresponde a 1, = corresponde a 0, >= corresponde a -1
+
+Ax_b = [matriz_A desigualdades b];
+
+%Esto de aca abajo crea Aw
 for i=1: num_rest
-    if i == w()
+    if i == w(1,i)  %como w es un vec fila le digo que en la dim 1 y que el i de esa pose lo compare con el i actual, esto es para ver que i sea el 
+        Aw = A(1,i) %Agregamos las filas correspondientes a las rest activas
+    end
 end
-Aw = A(1,i) %Que me traiga la fila de la i que es la activa, esto en un for y sale
+
 
 
 %Paso 1 Calcular proyector y direccion
