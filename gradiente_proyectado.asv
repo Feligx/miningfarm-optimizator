@@ -2,7 +2,7 @@
 %Paso 0 Encontrar w y Aw
 %Xo es un vector fila
 f(X) = 0
-for i=1: (size(Xkk_temp))
+for i=1: (size(X))
            f(X) = f(X) + X(1,i)*log(X(1,i)*vector_hashrate_triplicado(1,i))
 end
 %Para que a esa funcion le saquemos el gradiente
@@ -22,11 +22,6 @@ function[W,Aw,grad_func,matrix_rest] = paso_init(X0,f,b,A,vector_rest,vector_sym
 end
 
 %Paso 1 Calcular proyector y direccion
-W = []
-Aw = []
-grad_func = []
-W,Aw,grad_func = paso_init(X0,f,b,A,vector_rest,vector_symb_rest,vector_variables_x)
-
 function[direccion] = paso_1(W,Aw,grad_func)
     I = eye(size(Aw,2)) %Tamano de las columnas de AW
     Awt = transpose(Aw)
@@ -75,7 +70,7 @@ function[decider,Xkk] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualad
        %Alfa1
        vector_col_func_rest = transpose(vector_col_func_rest)
        alfas1_encontrado = solve(vector_col_func_rest,alfa1,'ReturnConditions',True) %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
-       a = alfas1_encontrado.conditionsl;%Es el intervalo que cumple todas las rest.
+       a = alfas1_encontrado.conditions;%Es el intervalo que cumple todas las rest.
        cell = cellstr(string(a));
        num_alfa11 = str2double(extractAfter(cell{1}, strlength(cell{1})-1)); %Alfamax cota para alfa2
        %Alfa2
@@ -85,14 +80,28 @@ function[decider,Xkk] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualad
        for i=1: (size(Xkk_temp))
            vec_func = vec_func + Xkk_temp(1,i)*log(Xkk_temp(1,i)*vector_hashrate_triplicado(1,i))
        end
-       solve([vec_func alfa2<=alfa11 alfa2>=0 ],alfa2,'ReturnConditions',True)
-       func_eval_Xkk = %No se bien como plantear esto
-       alfa2 = min() %Ver si es posible darle una restriccion o si lo hago con un if si no pos usar una busqueda de linea que puedo llamar desde otro archivo y sale
-       Xkk = Xk + (alfa1_encontrado*direccion) %Ya le damos un valor a alfa1
+       alfa2_encontrado = solve([vec_func alfa2<=num_alfa11 alfa2>=0 ],alfa2,'ReturnConditions',True)
+       b = alfa2_encontrado.conditions;%Es el intervalo que cumple todas las rest.
+       cell2 = cellstr(string(b));
+       num_alfa22 = str2double(extractAfter(cell2{1}, strlength(cell2{1})-1)); %Alfamax cota para alfa2
+       Xkk = X0 + (num_alfa22*direccion) %Ya le damos un valor a alfa1
    end
 end
 
 
 function[xoptimo] = helper(X0,f,b,A,vector_rest,vector_symb_rest,vector_variables_x,vector_hashrate)
+    %PASO 0
+    W = []
+    Aw = []
+    grad_func = []
+    W,Aw,grad_func = paso_init(X0,f,b,A,vector_rest,vector_symb_rest,vector_variables_x)
+    %PASO 0
+    %-------------------------------------------------------------------------
+    %PASO 1
     
+    %PASO 1
+    %-------------------------------------------------------------------------
+    %PASO 2
+    
+    %PASO 2
 end

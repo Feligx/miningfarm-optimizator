@@ -1,13 +1,8 @@
 %Dado f, A, b, vec_rest,vec_symb_rest,X0 Donde A es la matriz de restricciones, b es el lado derecho de las restricciones 
 %Paso 0 Encontrar w y Aw
 %Xo es un vector fila
-f(X) = 0
-for i=1: (size(X))
-           f(X) = f(X) + X(1,i)*log(X(1,i)*vector_hashrate_triplicado(1,i))
-end
-%Para que a esa funcion le saquemos el gradiente
 
-function[W,Aw,grad_func,matrix_rest] = paso_init(X0,f,b,A,vector_rest,vector_symb_rest,vector_variables_x)
+function[W,Aw,grad_func,matrix_rest] = paso_init(X0,f,b,A,vector_variables_x)
     Aw = []
     W = []
     grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
@@ -30,11 +25,8 @@ function[direccion] = paso_1(W,Aw,grad_func)
     direccion = -proyector * grad_func
 end
 
-%Paso 2 Esta ya es el wrapper de las otras dos y es la que se llamaara 
-direccion = []
-direccion = paso_1(W,Aw,grad_func)
-
-function[decider,Xkk] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado) %Asumiendo que vector_hashrate_triplicado es un vector fila
+%Paso 2 
+function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado) %Asumiendo que vector_hashrate_triplicado es un vector fila
    syms alfa1
    syms alfa2
    decider  = 0
@@ -47,13 +39,13 @@ function[decider,Xkk] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualad
       if miu >= 0 % Aqui paramos la ejecucion
           disp('Fin de la ejecucion por miu');
           decider = 1;
-          return decider,Xkk %El decider sera util para saber si ese Xkk es el siguiente punto de la ejecucion(0) o si es el optimo(1) ed ir a paso 1 y repetir todo
+          return decider,Xkk,W,Aw %El decider sera util para saber si ese Xkk es el siguiente punto de la ejecucion(0) o si es el optimo(1) ed ir a paso 1 y repetir todo
       else
           min_miu = min(miu) %Variable dual mas negativa
           dual_mas_neg = find(miu==min_miu) %En teoria me da el indice de la variable dual mas negativa que eliminare de W
           W(:,dual_mas_neg) = []%W es un vector fila y elimina la columna dual_mas_neg asi redifinimos el espacio de trabajo
           Aw(dual_mas_neg,:) = [] %Elimina la fila correspondiente a la restriccion que elimminamos
-          return decirder,Xkk %Decider en 0 significa que seguimos iterando
+          return decirder,Xkk,W,Aw %Decider en 0 significa que seguimos iterando
       end
    else
        Xkk_temp = X0 + (alfa1*direccion)%Como alfa es simbolica matlab la usa como variable 
@@ -85,23 +77,31 @@ function[decider,Xkk] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualad
        cell2 = cellstr(string(b));
        num_alfa22 = str2double(extractAfter(cell2{1}, strlength(cell2{1})-1)); %Alfamax cota para alfa2
        Xkk = X0 + (num_alfa22*direccion) %Ya le damos un valor a alfa1
+       return decirder,Xkk,W,Aw
    end
 end
 
 
-function[xoptimo] = helper(X0,f,b,A,vector_rest,vector_symb_rest,vector_variables_x,vector_hashrate)
+function[xoptimo] = helper(X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate)
+    f = 0
+    for i=1: (size(X))
+           f = f + X(1,i)*log(X(1,i)*vector_hashrate_triplicado(1,i))
+    end %Define la funcion objetivo
     %PASO 0
     W = []
     Aw = []
     grad_func = []
-    W,Aw,grad_func = paso_init(X0,f,b,A,vector_rest,vector_symb_rest,vector_variables_x)
+    W,Aw,grad_func = paso_init(X0,f,b,A,vector_variables_x)
     %PASO 0
-    
+    %-------------------------------------------------------------------------
     %PASO 1
-    
+    direccion = []
+    direccion = paso_1(W,Aw,grad_func)
     %PASO 1
-    
+    %-------------------------------------------------------------------------
     %PASO 2
-    
+    decider = 0
+    decider = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado) %Asumiendo que vector_hashrate_triplicado es un vector fila
     %PASO 2
+    %-------------------------------------------------------------------------
 end
