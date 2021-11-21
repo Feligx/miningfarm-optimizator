@@ -2,7 +2,7 @@
 %Paso 0 Encontrar w y Aw
 %Xo es un vector fila
 
-function[W,Aw] = paso_init(X0,f,b,A,vector_variables_x)
+function[W,Aw] = paso_init(X0,f,b,A)
     Aw = []
     W = []
     %Primero hayar W
@@ -26,7 +26,7 @@ function[direccion] = paso_1(W,Aw,grad_func)
 end
 
 %Paso 2 
-function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado,X) %Asumiendo que vector_hashrate_triplicado es un vector fila
+function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate) %Asumiendo que vector_hashrate_triplicado es un vector fila
    syms alfa1
    syms alfa2
    decider  = 0
@@ -50,7 +50,7 @@ function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desig
       end
    else
        Xkk_temp = X0 + (alfa1*direccion)%Como alfa es simbolica matlab la usa como variable 
-       vector_col_func_rest = A*Xkk_temp
+       vector_col_func_rest = A*Xkk_temp %Esto puede estar mal pues puede tomarlo como producto de vectores
        for i=1 :size(vector_desigualadades,1)
            if vector_desigualadades(i,1) == -1 %<=
                vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] <= b[i,1]] %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
@@ -71,7 +71,7 @@ function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desig
        
        vec_func = 0 %Usar para el grad
        for i=1: (size(Xkk_temp))
-           vec_func = vec_func + Xkk_temp(1,i)*log(Xkk_temp(1,i)*vector_hashrate_triplicado(1,i))
+           vec_func = vec_func + Xkk_temp(1,i)*log(Xkk_temp(1,i)*vector_hashrate(1,i))
        end
        alfa2_encontrado = solve([vec_func alfa2<=num_alfa11 alfa2>=0 ],alfa2,'ReturnConditions',True)
        b = alfa2_encontrado.conditions;%Es el intervalo que cumple todas las rest.
@@ -85,12 +85,13 @@ function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desig
    end
 end
 
-function[xoptimo] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func)
+function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func)
     if grad_func == []
         grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
+    end
     %PASO 0
     if W == [] & Aw == [] %Talvez sea solo un &
-        W,Aw = paso_init(X0,f,b,A,vector_variables_x)
+        W,Aw = paso_init(X0,f,b,A)
     end
         
     %PASO 0
@@ -102,7 +103,7 @@ function[xoptimo] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_h
     %-------------------------------------------------------------------------
     %PASO 2
     decider = 0
-    decider,Xk,W,Aw = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado,X) %Asumiendo que vector_hashrate_triplicado es un vector fila
+    decider,Xk,W,Aw = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate) %Asumiendo que vector_hashrate_triplicado es un vector fila
     if decider == 1
         return Xk %Definirlo para que lo tome de paso 2
     elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
@@ -114,12 +115,13 @@ function[xoptimo] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_h
     end
     %PASO 2
     %-------------------------------------------------------------------------
-    end
-    
-function[xoptimo] = helper_wrapper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func,X)
+end   
+function[X_optimo] = helper_wrapper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate)
     f = 0
-    for i=1: (size(X))
-           f = f + X(1,i)*log(X(1,i)*vector_hashrate_triplicado(1,i))
+    grad_func = []
+    for i=1: (size(vector_variables_x,1))
+           f = f + X(1,i)*log(X(1,i)*vector_hashrate(1,i))
     end %Define la funcion objetivo
-    helper_wrapper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func)
+    X_optimo = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func)
+    return X_optimo
 end
