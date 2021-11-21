@@ -2,18 +2,18 @@
 %Paso 0 Encontrar w y Aw
 %Xo es un vector fila
 
-function[W,Aw,grad_func,matrix_rest] = paso_init(X0,f,b,A,vector_variables_x)
+function[W,Aw] = paso_init(X0,f,b,A,vector_variables_x)
     Aw = []
     W = []
-    grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
     %Primero hayar W
-    for i=1 :size(matrix_rest,2) %Pues es una rest por columna
+    for i=1 :size(A,1) %Pues es una rest por columna
          rest =  A(i,:)
          if rest*X0(1,i) == b(i,1)%Falta decirle la pose de X0
             Aw = [Aw;rest] 
             W = [W i]
          end
     end
+    return W,Aw %Talvez sobre esta linea
 end
 
 %Paso 1 Calcular proyector y direccion
@@ -26,7 +26,7 @@ function[direccion] = paso_1(W,Aw,grad_func)
 end
 
 %Paso 2 
-function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado) %Asumiendo que vector_hashrate_triplicado es un vector fila
+function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado,X) %Asumiendo que vector_hashrate_triplicado es un vector fila
    syms alfa1
    syms alfa2
    decider  = 0
@@ -78,22 +78,21 @@ function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desig
        cell2 = cellstr(string(b));
        num_alfa22 = str2double(extractAfter(cell2{1}, strlength(cell2{1})-1)); %Alfamax cota para alfa2
        Xkk = X0 + (num_alfa22*direccion) %Ya le damos un valor a alfa1
-       %Decider en 0 vuelve a ejecutar desde paso 0
+       %Decider en 2 vuelve a ejecutar desde paso 0 y recalcula W y Aw a
+       %pesar de que no sean vacios
+       decider = 2
        return decirder,Xkk,W,Aw
    end
 end
 
-
-function[xoptimo] = helper(X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate)
-    f = 0
-    for i=1: (size(X))
-           f = f + X(1,i)*log(X(1,i)*vector_hashrate_triplicado(1,i))
-    end %Define la funcion objetivo
+function[xoptimo] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func)
+    if grad_func == []
+        grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
     %PASO 0
-    W = []
-    Aw = []
-    grad_func = []
-    W,Aw,grad_func = paso_init(X0,f,b,A,vector_variables_x)
+    if W == [] & Aw == [] %Talvez sea solo un &
+        W,Aw = paso_init(X0,f,b,A,vector_variables_x)
+    end
+        
     %PASO 0
     %-------------------------------------------------------------------------
     %PASO 1
@@ -103,12 +102,24 @@ function[xoptimo] = helper(X0,b,A,vector_symb_rest,vector_variables_x,vector_has
     %-------------------------------------------------------------------------
     %PASO 2
     decider = 0
-    decider = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado) %Asumiendo que vector_hashrate_triplicado es un vector fila
+    decider,Xk,W,Aw = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado,X) %Asumiendo que vector_hashrate_triplicado es un vector fila
     if decider == 1
-        return Xkk %Definirlo para que lo tome de paso 2
-    else
-         helper(X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate) %Ver como actualizo Aw, W y Xk
+        return Xk %Definirlo para que lo tome de paso 2
+    elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
+        Aw = []
+        W = []
+        helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func) %Ver como actualizo Aw, W y Xk
+    else %Es decir vuelve a iterar por los mius redifiniendo el w en este caso no debe hacer que vuelvan a calcular el A y el W
+         helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func) %Ver como actualizo Aw, W y Xk
     end
     %PASO 2
     %-------------------------------------------------------------------------
+    end
+    
+function[xoptimo] = helper_wrapper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func,X)
+    f = 0
+    for i=1: (size(X))
+           f = f + X(1,i)*log(X(1,i)*vector_hashrate_triplicado(1,i))
+    end %Define la funcion objetivo
+    helper_wrapper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func)
 end
