@@ -58,17 +58,23 @@ function[decider,Xkk] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualad
        vector_col_func_rest = A*Xkk_temp
        for i=1 :size(vector_desigualadades,1)
            if vector_desigualadades(i,1) == -1 %<=
-               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] <= b[i,:]] %b es un vector columna
+               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] <= b[i,1]] %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
            elseif vector_desigualadades(i,1) == 0 %==
-               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] == b[i,:]]
+               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] == b[i,1]]
            elseif vector_desigualadades(i,1) == 1 %>=
-               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] >= b[i,:]]
+               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] >= b[i,1]]
            end
        end
-       alfa1_encontrado = solve(vector_col_func_rest,alfa1) %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea
-       
+       vector_col_func_rest = transpose(vector_col_func_rest)
+       alfas1_encontrado = solve(vector_col_func_rest,alfa1,'') %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
+       alfas1_encontrado.
        func_eval_Xkk = %No se bien como plantear esto
        alfa2 = min() %Ver si es posible darle una restriccion o si lo hago con un if si no pos usar una busqueda de linea que puedo llamar desde otro archivo y sale
        Xkk = Xk + (alfa1_encontrado*direccion) %Ya le damos un valor a alfa1
    end
+end
+
+
+function[xoptimo] = helper(X0,f,b,A,vector_rest,vector_symb_rest,vector_variables_x)
+    
 end

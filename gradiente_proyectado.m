@@ -66,10 +66,16 @@ function[decider,Xkk] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualad
            end
        end
        vector_col_func_rest = transpose(vector_col_func_rest)
-       alfas1_encontrado = solve(vector_col_func_rest,alfa1) %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
-       disp(alfas1_encontrado);
+       alfas1_encontrado = solve(vector_col_func_rest,alfa1,'ReturnConditions',True) %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
+       a = alfas1_encontrado.conditionsl;%Es el intervalo que cumple todas las rest.
+       
        func_eval_Xkk = %No se bien como plantear esto
        alfa2 = min() %Ver si es posible darle una restriccion o si lo hago con un if si no pos usar una busqueda de linea que puedo llamar desde otro archivo y sale
        Xkk = Xk + (alfa1_encontrado*direccion) %Ya le damos un valor a alfa1
    end
+end
+
+
+function[xoptimo] = helper(X0,f,b,A,vector_rest,vector_symb_rest,vector_variables_x)
+    
 end
