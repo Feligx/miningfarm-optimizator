@@ -1,17 +1,16 @@
 %Dado f, A, b, vec_rest,vec_symb_rest,X0 Donde A es la matriz de restricciones, b es el lado derecho de las restricciones 
 %Paso 0 Encontrar w y Aw
 function[W,Aw,grad_func,matrix_rest] = paso_init(X0,f,b,A,vector_rest,vector_symb_rest,vector_variables_x)
-    matrix_rest = [vector_rest;vector_symb_rest;b]; %La idea es que en cada columna se vea una restriccion
+    Aw = []
+    W = []
     grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
     %Primero hayar W
     for i=1 :size(matrix_rest,2) %Pues es una rest por columna
-        restric_i = matrix_rest(2,i); %Dim 2 para columnas e i es para la fila correspondiente
-        func_rest_i = restric_i(1,1) - restric_i(1,3); %1 para columna y 1 para la fila 1 que es la funcion de la rest y le restamos el b para que al evaluar deba ser 0 si no, no esta activa
-        restric_i_evaluada = feval(func_rest_i,X0);%Siento que debo hacer un ciclo para encontrar el vector X0 para indicarle 
-        if restric_i_evaluada == 0 %Ed esta activa
-            W = W[1,i] %Agrega el i correspondiente a la rest activa en el punto X0
-            Aw = Aw[1,A(1,i)] %Agrega la fila correspondiente a la restriccion activa en el punto X0
-        end
+         rest =  A(i,:)
+         if rest*X0 == b(i,1)
+            Aw = [Aw;rest] 
+            W = [W i]
+         end
     end
 end
 
@@ -33,14 +32,14 @@ end
 direccion = []
 direccion = paso_1(W,Aw,grad_func)
 
-function[decider,Xkk] = paso_2(f,direccion,Xk,grad_func,W,Aw,matrix_rest)
+function[decider,Xkk] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b)
    syms alfa1
    syms alfa2
    decider  = 0
-   Xkk = Xk
+   Xkk = X0
    Awt = transpose(Aw)
    Awtt = inv(Aw*Awt)
-   
+   Xkk_temp = 0
    if direccion == 0
       miu = -Awtt*Awt*grad_func %No se si es Awt o Aw confirmar
       if miu >= 0 % Aqui paramos la ejecucion
@@ -52,12 +51,24 @@ function[decider,Xkk] = paso_2(f,direccion,Xk,grad_func,W,Aw,matrix_rest)
           dual_mas_neg = find(miu==min_miu) %En teoria me da el indice de la variable dual mas negativa que eliminare de W
           W(:,dual_mas_neg) = []%W es un vector fila y elimina la columna dual_mas_neg asi redifinimos el espacio de trabajo
           Aw(dual_mas_neg,:) = [] %Elimina la fila correspondiente a la restriccion que elimminamos
-          return decirder,Xkk
+          return decirder,Xkk %Decider en 0 significa que seguimos iterando
       end
    else
-       Xkk_temp = Xk + (alfa1*direccion)%Como alfa es simbolica matlab la usa como variable
-       alfa1 = 
-       func_eval_Xkk = 
-       alfa2 = min()     
+       Xkk_temp = X0 + (alfa1*direccion)%Como alfa es simbolica matlab la usa como variable 
+       vector_col_func_rest = A*Xkk_temp
+       for i=1 :size(vector_desigualadades,1)
+           if vector_desigualadades(i,1) == -1 %<=
+               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] <= b[i,:]] %b es un vector columna
+           elseif vector_desigualadades(i,1) == 0 %==
+               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] == b[i,:]]
+           elseif vector_desigualadades(i,1) == 1 %>=
+               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] >= b[i,:]]
+           end
+       end
+       alfa1_encontrado = solve(vector_col_func_rest,alfa1) %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea
+       
+       func_eval_Xkk = %No se bien como plantear esto
+       alfa2 = min() %Ver si es posible darle una restriccion o si lo hago con un if si no pos usar una busqueda de linea que puedo llamar desde otro archivo y sale
+       Xkk = Xk + (alfa1_encontrado*direccion) %Ya le damos un valor a alfa1
    end
 end
