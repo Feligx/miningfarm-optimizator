@@ -39,6 +39,7 @@ function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desig
       if miu >= 0 % Aqui paramos la ejecucion
           disp('Fin de la ejecucion por miu');
           decider = 1;
+          %Decider en 1 retorna el punto optimo
           return decider,Xkk,W,Aw %El decider sera util para saber si ese Xkk es el siguiente punto de la ejecucion(0) o si es el optimo(1) ed ir a paso 1 y repetir todo
       else
           min_miu = min(miu) %Variable dual mas negativa
@@ -77,6 +78,7 @@ function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desig
        cell2 = cellstr(string(b));
        num_alfa22 = str2double(extractAfter(cell2{1}, strlength(cell2{1})-1)); %Alfamax cota para alfa2
        Xkk = X0 + (num_alfa22*direccion) %Ya le damos un valor a alfa1
+       %Decider en 0 vuelve a ejecutar desde paso 0
        return decirder,Xkk,W,Aw
    end
 end
@@ -102,6 +104,11 @@ function[xoptimo] = helper(X0,b,A,vector_symb_rest,vector_variables_x,vector_has
     %PASO 2
     decider = 0
     decider = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate_triplicado) %Asumiendo que vector_hashrate_triplicado es un vector fila
+    if decider == 1
+        return Xkk %Definirlo para que lo tome de paso 2
+    else
+         helper(X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate) %Ver como actualizo Aw, W y Xk
+    end
     %PASO 2
     %-------------------------------------------------------------------------
 end
