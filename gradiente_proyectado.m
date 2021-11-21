@@ -52,11 +52,11 @@ function[decider,Xkk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desig
        Xkk_temp = X0 + (alfa1*direccion)%Como alfa es simbolica matlab la usa como variable 
        vector_col_func_rest = A*Xkk_temp %Esto puede estar mal pues puede tomarlo como producto de vectores
        for i=1 :size(vector_desigualadades,1)
-           if vector_desigualadades(i,1) == -1 %<=
+           if vector_desigualadades(i,1) == 1 %<=
                vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] <= b[i,1]] %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
            elseif vector_desigualadades(i,1) == 0 %==
                vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] == b[i,1]]
-           elseif vector_desigualadades(i,1) == 1 %>=
+           elseif vector_desigualadades(i,1) == -1 %>=
                vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] >= b[i,1]]
            end
        end
