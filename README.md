@@ -21,7 +21,7 @@ The following are the variables that were used in the tool:
 * Working hour of each individual machine
 * Total of working hours of the farm
 
-**See the "Data" section at the end for the reference of the data**
+**See the [Data](https://github.com/Feligx/miningfarm-optimizator#data) section at the end for the reference of the data**
 
 ## Algorithms used
 
