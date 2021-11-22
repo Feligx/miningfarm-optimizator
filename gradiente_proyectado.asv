@@ -53,7 +53,7 @@ function[decider,Xkk,W,Aw] = paso_2(direccion,grad_func,W,Aw,A,X0,vector_desigua
        vector_col_func_rest = A*Xkk_temp; %Esto puede estar mal pues puede tomarlo como producto de vectores
        for i=1 :size(vector_desigualadades,1)
            if vector_desigualadades(i,1) == 1 %<=
-               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] <= b[i,1]] %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
+               vector_col_func_rest(i,1:end) = [vector_col_func_rest[i,:] <= b[i,1]] %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
            elseif vector_desigualadades(i,1) == 0 %==
                vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] == b[i,1]]
            elseif vector_desigualadades(i,1) == -1 %>=
@@ -104,25 +104,25 @@ function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashra
     %PASO 2
     decider = 0;
     Xk = 0;
-    decider,Xk,W,Aw = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate) %Asumiendo que vector_hashrate_triplicado es un vector fila
+    decider,Xk,W,Aw = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate); %Asumiendo que vector_hashrate_triplicado es un vector fila
     if decider == 1
         return Xk %Definirlo para que lo tome de paso 2
     elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
-        Aw = []
-        W = []
-        helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func) %Ver como actualizo Aw, W y Xk
+        Aw = [];
+        W = [];
+        helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func, W, Aw) %Ver como actualizo Aw, W y Xk
     else %Es decir vuelve a iterar por los mius redifiniendo el w en este caso no debe hacer que vuelvan a calcular el A y el W
-         helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func) %Ver como actualizo Aw, W y Xk
+         helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func, W, Aw) %Ver como actualizo Aw, W y Xk
     end
     %PASO 2
     %-------------------------------------------------------------------------
 end   
-function[X_optimo] = helper_wrapper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate)
-    f = 0
-    grad_func = []
+function[X_optimo] = helper_wrapper(X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate)
+    f = 0;
+    grad_func = [];
     for i=1: (size(vector_variables_x,1))
-           f = f + X(1,i)*log(X(1,i)*vector_hashrate(1,i))
+           f = f + X(1,i)*log(X(1,i)*vector_hashrate(1,i));
     end %Define la funcion objetivo
-    X_optimo = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func)
+    X_optimo = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func);
     return X_optimo
 end

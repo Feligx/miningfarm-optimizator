@@ -53,11 +53,11 @@ function[decider,Xkk,W,Aw] = paso_2(direccion,grad_func,W,Aw,A,X0,vector_desigua
        vector_col_func_rest = A*Xkk_temp; %Esto puede estar mal pues puede tomarlo como producto de vectores
        for i=1 :size(vector_desigualadades,1)
            if vector_desigualadades(i,1) == 1 %<=
-               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] <= b[i,1]] %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
+               vector_col_func_rest(i,1:end) = [vector_col_func_rest(i,1:end) <= b(i,1)]; %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
            elseif vector_desigualadades(i,1) == 0 %==
-               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] == b[i,1]]
+               vector_col_func_rest(i,1:end) = [vector_col_func_rest(i,1:end) == b(i,1)];
            elseif vector_desigualadades(i,1) == -1 %>=
-               vector_col_func_rest[i,:] = [vector_col_func_rest[i,:] >= b[i,1]]
+               vector_col_func_rest(i,1:end) = [vector_col_func_rest(i,1:end) >= b(i,1)];
            end
        end
        %Alfa1
@@ -106,7 +106,7 @@ function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashra
     Xk = 0;
     decider,Xk,W,Aw = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate); %Asumiendo que vector_hashrate_triplicado es un vector fila
     if decider == 1
-        return Xk %Definirlo para que lo tome de paso 2
+        return %Definirlo para que lo tome de paso 2
     elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
         Aw = [];
         W = [];
@@ -124,5 +124,5 @@ function[X_optimo] = helper_wrapper(X0,b,A,vector_symb_rest,vector_variables_x,v
            f = f + X(1,i)*log(X(1,i)*vector_hashrate(1,i));
     end %Define la funcion objetivo
     X_optimo = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func);
-    return X_optimo
+    return
 end
