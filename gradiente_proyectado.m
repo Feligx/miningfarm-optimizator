@@ -5,7 +5,7 @@
 
 
 classdef gradiente_proyectado 
-    methods
+    methods (Static)
         function[W,Aw] = paso_0(X0,b,A)
             Aw = [];
             W = [];
@@ -120,18 +120,22 @@ classdef gradiente_proyectado
         end   
         %vector_desigualdades que es un vector columna
         function[X_optimo] = helper_wrapper(vector_input)
-            X = vector_input(1,1);            
-            b = vector_input(1,2);
-            A = vector_input(1,3);
+            X = cell2mat(vector_input(1,1));            
+            b = cell2mat(vector_input(1,2));
+            A = cell2mat(vector_input(1,3));
             vector_variables_x = vector_input(1,4);
-            vector_hashrate = vector_input(1,5);  
-            vector_desigualdades = vector_input(1,6);
+            B = [vector_variables_x{:}];
+            vector_variables_x = B;
+            disp(vector_variables_x);
+            vector_hashrate = cell2mat(vector_input(1,5));  
+            vector_desigualdades = cell2mat(vector_input(1,6));
             f = 0;
             grad_func = [];
-            for i=1: (size(vector_variables_x,1))
-                   f = f + X(1,i)*log(X(1,i)*vector_hashrate(1,i));
+            for i=1: (size(vector_variables_x,2))
+                disp(X(i,1));
+                f = f + X(i,1)*log(X(i,1)*vector_hashrate(i,1));
             end %Define la funcion objetivo
-            X_optimo = helper(f,X0,b,A,vector_variables_x,vector_hashrate,grad_func,vector_desigualdades);
+            X_optimo = helper(f,X,b,A,vector_variables_x,vector_hashrate,grad_func,vector_desigualdades);
             return
         end
     end

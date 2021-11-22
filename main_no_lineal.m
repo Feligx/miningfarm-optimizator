@@ -18,7 +18,7 @@ myObj = gradiente_proyectado;
 X = X([1:size(matrix_rest,2)]);
 
 vector_variables_x = sym('x', [1 size(matrix_rest,2)]); %Vector fila de las xis
-vector_input = [[X] [b] [matrix_rest] [vector_variables_x] [vector_hashrates] [vec_desigualdades_orientacion]];
+vector_input = {X b matrix_rest vector_variables_x vector_hashrates vec_desigualdades_orientacion};
 x = myObj.helper_wrapper(vector_input);
 
 

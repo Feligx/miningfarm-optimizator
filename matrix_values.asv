@@ -12,7 +12,9 @@ daily_hours = input(prompt)*size(M,1); %Hacer que cada xi no sea mayor a 18
 vector_hashrates = M(1:end ,1);
 
 for i = 1: size(vector_hashrates,1) %Pues son size*3 unos
-    
+    matrixp(i,j ) = 1;
+    matrixp(i,j+1 ) = 1;
+    matrixp(i,j+2 ) = 1;
     j = j+3;
 end
 
