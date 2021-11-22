@@ -36,12 +36,12 @@ For both problems, optimization algorithms are used, these are developed in Matl
 The following are considerations to have when trying the tool.
 
 
-## Disclaimer
+### - Disclaimer
 
 This is a simulator, and should not be treated as a diciding tool for real miners in order to use their GPUs.
 All the data used was taken from the internet and could be deprecated in some future, so if you try the tool be sure to have the data you want.
 
-## Data
+### - Data
 
 All the data used was obtained from [Whattomine](https://whattomine.com/gpus?nvidia=true&amd=true&filter=all)
 
