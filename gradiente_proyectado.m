@@ -87,7 +87,7 @@ classdef functionsContainer
            end
         end
 
-        function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func, W, Aw,,vector_desigualdades)
+        function[Xk] = helper(f,X0,b,A,vector_variables_x,vector_hashrate,grad_func, W, Aw,vector_desigualdades)
             if grad_func == []
                 grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
             end
@@ -111,21 +111,21 @@ classdef functionsContainer
             elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
                 Aw = [];
                 W = [];
-                helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func, W, Aw) %Ver como actualizo Aw, W y Xk
+                helper(f,X0,b,A,vector_variables_x,vector_hashrate,grad_func, W, Aw,vector_desigualdades) %Ver como actualizo Aw, W y Xk
             else %Es decir vuelve a iterar por los mius redifiniendo el w en este caso no debe hacer que vuelvan a calcular el A y el W
-                 helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func, W, Aw) %Ver como actualizo Aw, W y Xk
+                 helper(f,X0,b,A,vector_variables_x,vector_hashrate,grad_func, W, Aw,vector_desigualdades) %Ver como actualizo Aw, W y Xk
             end
             %PASO 2
             %-------------------------------------------------------------------------
         end   
 
-        function[X_optimo] = helper_wrapper(X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,vector_desigualdades)%vector_desigualdades que es un vector columna
+        function[X_optimo] = helper_wrapper(X0,b,A,vector_variables_x,vector_hashrate,vector_desigualdades)%vector_desigualdades que es un vector columna
             f = 0;
             grad_func = [];
             for i=1: (size(vector_variables_x,1))
                    f = f + X(1,i)*log(X(1,i)*vector_hashrate(1,i));
             end %Define la funcion objetivo
-            X_optimo = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func,vector_desigualdades);
+            X_optimo = helper(f,X0,b,A,vector_variables_x,vector_hashrate,grad_func,vector_desigualdades);
             return
         end
     end
