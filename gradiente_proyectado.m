@@ -26,7 +26,7 @@ function[direccion] = paso_1(Aw,grad_func)
 end
 
 %Paso 2 
-function[decider,Xkk,W,Aw] = paso_2(direccion,grad_func,W,Aw,A,X0,vector_desigualadades,vector_hashrate) %Asumiendo que vector_hashrate_triplicado es un vector fila
+function[decider,Xkk,W,Aw] = paso_2(direccion,grad_func,W,Aw,A,X0,vector_desigualdades,vector_hashrate) %Asumiendo que vector_hashrate_triplicado es un vector fila
    syms alfa1
    syms alfa2
    decider  = 0;
@@ -51,12 +51,12 @@ function[decider,Xkk,W,Aw] = paso_2(direccion,grad_func,W,Aw,A,X0,vector_desigua
    else
        Xkk_temp = X0 + (alfa1*direccion);%Como alfa es simbolica matlab la usa como variable 
        vector_col_func_rest = A*Xkk_temp; %Esto puede estar mal pues puede tomarlo como producto de vectores
-       for i=1 :size(vector_desigualadades,1)
-           if vector_desigualadades(i,1) == 1 %<=
+       for i=1 :size(vector_desigualdades,1)
+           if vector_desigualdades(i,1) == 1 %<=
                vector_col_func_rest(i,1:end) = [vector_col_func_rest(i,1:end) <= b(i,1)]; %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
-           elseif vector_desigualadades(i,1) == 0 %==
+           elseif vector_desigualdades(i,1) == 0 %==
                vector_col_func_rest(i,1:end) = [vector_col_func_rest(i,1:end) == b(i,1)];
-           elseif vector_desigualadades(i,1) == -1 %>=
+           elseif vector_desigualdades(i,1) == -1 %>=
                vector_col_func_rest(i,1:end) = [vector_col_func_rest(i,1:end) >= b(i,1)];
            end
        end
@@ -83,7 +83,7 @@ function[decider,Xkk,W,Aw] = paso_2(direccion,grad_func,W,Aw,A,X0,vector_desigua
    end
 end
 
-function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func, W, Aw)
+function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func, W, Aw,,vector_desigualdades)
     if grad_func == []
         grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
     end
@@ -102,7 +102,7 @@ function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashra
     %PASO 2
     decider = 0;
     Xk = 0;
-    decider,Xk,W,Aw = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualadades,b,vector_hashrate); %Asumiendo que vector_hashrate_triplicado es un vector fila
+    decider,Xk,W,Aw = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualdades,b,vector_hashrate); %Asumiendo que vector_hashrate_triplicado es un vector fila
     if decider == 1
         return %Definirlo para que lo tome de paso 2
     elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
@@ -115,12 +115,12 @@ function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashra
     %PASO 2
     %-------------------------------------------------------------------------
 end   
-function[X_optimo] = helper_wrapper(X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate)
+function[X_optimo] = helper_wrapper(X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,vector_desigualdades)%vector_desigualdades que es un vector columna
     f = 0;
     grad_func = [];
     for i=1: (size(vector_variables_x,1))
            f = f + X(1,i)*log(X(1,i)*vector_hashrate(1,i));
     end %Define la funcion objetivo
-    X_optimo = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func);
+    X_optimo = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,grad_func,vector_desigualdades);
     return
 end
