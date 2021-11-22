@@ -2,7 +2,10 @@
 %Paso 0 Encontrar w y Aw
 %Xo es un vector fila
 
-function[W,Aw] = gradiente_proyectado(X0,b,A)
+
+
+
+function[W,Aw] = paso_0(X0,b,A)
     Aw = [];
     W = [];
     %Primero hayar W
@@ -89,9 +92,8 @@ function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashra
     end
     %PASO 0
     if W == [] && Aw == [] %Talvez sea solo un &
-        [W,Aw] = paso_init(X0,f,b,A);
+        [W,Aw] = paso_0(X0,b,A);
     end
-        
     %PASO 0
     %-------------------------------------------------------------------------
     %PASO 1
@@ -115,6 +117,7 @@ function[Xk] = helper(f,X0,b,A,vector_symb_rest,vector_variables_x,vector_hashra
     %PASO 2
     %-------------------------------------------------------------------------
 end   
+
 function[X_optimo] = helper_wrapper(X0,b,A,vector_symb_rest,vector_variables_x,vector_hashrate,vector_desigualdades)%vector_desigualdades que es un vector columna
     f = 0;
     grad_func = [];
