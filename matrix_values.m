@@ -10,6 +10,7 @@ prompt = 'Ingrese las horas de trabajo maximas diarias';
 daily_hours = input(prompt)*size(M,1); %Hacer que cada xi no sea mayor a 18
 
 
+
 d = transpose( M(1:end ,size(M,2)-1));
 c = [];
 for i =1: size(d,2)

@@ -71,13 +71,11 @@ function[decider,Xkk,W,Aw] = paso_2(direccion,grad_func,W,Aw,A,X0,vector_desigua
        
        vec_func = 0; %Usar para el grad
        for i=1: (size(Xkk_temp))
-           vec_func = vec_func + Xkk_temp(1,i)*log(Xkk_temp(1,i)*vector_hashrate(1,i));
+           vec_func = @(alfa2) vec_func + Xkk_temp(1,i)*log(Xkk_temp(1,i)*vector_hashrate(1,i));
        end
-       alfa2_encontrado = solve([vec_func alfa2<=num_alfa11 alfa2>=0 ],alfa2,'ReturnConditions',True);
-       b = alfa2_encontrado.conditions;%Es el intervalo que cumple todas las rest.
-       cell2 = cellstr(string(b));
-       num_alfa22 = str2double(extractAfter(cell2{1}, strlength(cell2{1})-1)); %Alfamax cota para alfa2
-       Xkk = X0 + (num_alfa22*direccion); %Ya le damos un valor a alfa1
+       vec_limites = [0 alfa1/2 alfa1];
+       alfa2_encontrado = Ajuste_cuadratico(vec_func, vec_limites, 0,001);
+       Xkk = X0 + (alfa2_encontrado*direccion); %Ya le damos un valor a alfa1
        %Decider en 2 vuelve a ejecutar desde paso 0 y recalcula W y Aw a
        %pesar de que no sean vacios
        decider = 2;
