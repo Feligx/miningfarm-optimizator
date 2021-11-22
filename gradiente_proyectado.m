@@ -4,7 +4,7 @@
 
 
 
-classdef functionsContainer 
+classdef gradiente_proyectado 
     methods
         function[W,Aw] = paso_0(X0,b,A)
             Aw = [];
@@ -118,10 +118,9 @@ classdef functionsContainer
             %PASO 2
             %-------------------------------------------------------------------------
         end   
-
-        function[X_optimo] = helper_wrapper(X0,b,A,vector_variables_x,vector_hashrate,vector_desigualdades)%vector_desigualdades que es un vector columna
+        %vector_desigualdades que es un vector columna
+        function[X_optimo] = helper_wrapper(X,b,A,vector_variables_x,vector_hashrate,vector_desigualdades)
             X0 = X([1:size(matrix_rest,2)])
-            vector_variables_x = sym('x', [1 size(matrix_rest,2)]) %Vector fila de las xis
             f = 0;
             grad_func = [];
             for i=1: (size(vector_variables_x,1))
