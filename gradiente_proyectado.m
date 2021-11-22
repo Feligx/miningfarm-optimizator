@@ -119,8 +119,13 @@ classdef gradiente_proyectado
             %-------------------------------------------------------------------------
         end   
         %vector_desigualdades que es un vector columna
-        function[X_optimo] = helper_wrapper(X,b,A,vector_variables_x,vector_hashrate,vector_desigualdades)
-            X0 = X([1:size(matrix_rest,2)])
+        function[X_optimo] = helper_wrapper(vector_input)
+            X = vector_input(1,1);            
+            b = vector_input(1,2);
+            A = vector_input(1,3);
+            vector_variables_x = vector_input(1,4);
+            vector_hashrate = vector_input(1,5);  
+            vector_desigualdades = vector_input(1,6);
             f = 0;
             grad_func = [];
             for i=1: (size(vector_variables_x,1))
