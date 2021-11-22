@@ -54,30 +54,30 @@ classdef functionsContainer
               end
            else
                Xkk_temp = X0 + (alfa1*direccion);%Como alfa es simbolica matlab la usa como variable 
-               %vector_col_func_rest = A*Xkk_temp; %Esto puede estar mal pues puede tomarlo como producto de vectores
-               vector_col_func_rest = matrix_rest*transpose(Xkk_temp);
-               for i=1 :size(vec_desigualdades_orientacion,1) %Las desigualdades saben cuantas rest hay
-                   if vec_desigualdades_orientacion(i,1) == 1 %<=
-                       vector_col_func_rest(i,:) = [vector_col_func_rest(i,1:end) <= b(i,1)]; %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
-                   elseif vec_desigualdades_orientacion(i,1) == 0 %==
-                       vector_col_func_rest(i,:) = [vector_col_func_rest(i,1:end) == b(i,1)];
-                   elseif vec_desigualdades_orientacion(i,1) == -1 %>=
-                       vector_col_func_rest(i,:) = [vector_col_func_rest(i,1:end) >= b(i,1)];
+               vector_col_func_rest = A*Xkk_temp; %Esto puede estar mal pues puede tomarlo como producto de vectores
+               for i=1 :size(vector_desigualdades,1)
+                   if vector_desigualdades(i,1) == 1 %<=
+                       vector_col_func_rest(i,1:end) = [vector_col_func_rest(i,1:end) <= b(i,1)]; %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
+                   elseif vector_desigualdades(i,1) == 0 %==
+                       vector_col_func_rest(i,1:end) = [vector_col_func_rest(i,1:end) == b(i,1)];
+                   elseif vector_desigualdades(i,1) == -1 %>=
+                       vector_col_func_rest(i,1:end) = [vector_col_func_rest(i,1:end) >= b(i,1)];
                    end
-                end
+               end
                %Alfa1
                vector_col_func_rest = transpose(vector_col_func_rest);
-               alfas1_encontrado = solve(vector_col_func_rest,'ReturnConditions',True); %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
+               alfas1_encontrado = solve(vector_col_func_rest,alfa1,'ReturnConditions',True); %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
                a = alfas1_encontrado.conditions;%Es el intervalo que cumple todas las rest.
                cell = cellstr(string(a));
                num_alfa11 = str2double(extractAfter(cell{1}, strlength(cell{1})-1)); %Alfamax cota para alfa2
                %Alfa2
                Xkk_temp = X0 + (alfa2*direccion);
+
                vec_func = 0; %Usar para el grad
                for i=1: (size(Xkk_temp))
                    vec_func = @(alfa2) vec_func + Xkk_temp(1,i)*log(Xkk_temp(1,i)*vector_hashrate(1,i));
                end
-               vec_limites = [0 num_alfa11/2 num_alfa11];
+               vec_limites = [0 alfa1/2 alfa1];
                alfa2_encontrado = Ajuste_cuadratico(vec_func, vec_limites, 0,001);
                Xkk = X0 + (alfa2_encontrado*direccion); %Ya le damos un valor a alfa1
                %Decider en 2 vuelve a ejecutar desde paso 0 y recalcula W y Aw a
