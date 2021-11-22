@@ -9,6 +9,7 @@ min_profit = input(prompt);
 prompt = 'Ingrese las horas de trabajo maximas diarias';
 daily_hours = input(prompt)*size(M,1); %Hacer que cada xi no sea mayor a 18
 
+vector_hashrates = M(1:end ,1);
 
 
 d = transpose( M(1:end ,size(M,2)-1));
