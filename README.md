@@ -28,7 +28,7 @@ The following are the variables that were used in the tool:
 For both problems, optimization algorithms are used, these are developed in Matlab allowing user input for certain variables to solve a specific problem for the user's wish.
 
 *  Linear problem: **Simplex**
-*  Non-linear problem : **Projected Gradient Descent**
+*  Non-linear problem : **Projected Gradient**
 
 
 ## Considerations
