@@ -42,10 +42,10 @@ if decider == 1
 elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
     Aw = [];
     W = [];
-    vector_input = {f X b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades};
+    vector_input = {f Xk b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades, matrix_rest, vec_desigualdades_orientacion};
     helper(vector_input) %Ver como actualizo Aw, W y Xk
 else %Es decir vuelve a iterar por los mius redifiniendo el w en este caso no debe hacer que vuelvan a calcular el A y el W
-    vector_input = {f X b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades};
+    vector_input = {f Xk b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades, matrix_rest, vec_desigualdades_orientacion};
     helper(vector_input) %Ver como actualizo Aw, W y Xk
 end
 %PASO 2

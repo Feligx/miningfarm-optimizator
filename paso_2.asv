@@ -50,7 +50,7 @@ else
     
     disp(a);
     
-    a = 3;
+    a = 8;
 
 
     
@@ -71,15 +71,12 @@ else
     for i=1: (size(Xkk_temp))
         vec_func = vec_func + Xkk_temp(i,1)*log(Xkk_temp(i,1)+vector_hashrate(i,1));
     end
-    %vec_limites = [3 a/2 a];
+    vec_limites = [3 a/2 a];
     %alfa2_encontrado = Ajuste_cuadratico(vpa(subs(f,vector_variables_x,Xkk_temp')), vec_limites, 0.001);
-    fun = matlabFunction(vpa(subs(f,vector_variables_x,Xkk_temp')));
+    fun = @(alfa2) vpa(subs(f,vector_variables_x,Xkk_temp'));
     x0 = 0;
-    A = [1;-1];
-    b= [a, 0];
-    alfa2_encontrado = fminsearch(fun,x0);
-    
-    fplot(fun);
+    A = []
+    alfa2_encontrado = fmincon(fun,x0,A,b) ;
     %alfa2_encontrado = alfa2_encontrado.conditions
     disp(alfa2_encontrado);
     Xkk = X0 + (alfa2_encontrado*direccion); %Ya le damos un valor a alfa1
