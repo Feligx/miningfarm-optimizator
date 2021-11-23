@@ -79,7 +79,7 @@ else
     %vec_limites = [3 a/2 a];
     %alfa2_encontrado = Ajuste_cuadratico(vpa(subs(f,vector_variables_x,Xkk_temp')), vec_limites, 0.001);
     fun = matlabFunction(vpa(subs(f,vector_variables_x,Xkk_temp')));
-    a = 1;
+    a = 1
     alfa2_encontrado = fminbnd(fun,0,a);
     
     fplot(fun);
@@ -87,8 +87,6 @@ else
 %     disp(alfa2_encontrado);
     Xkk = X0 + (alfa2_encontrado*direccion); %Ya le damos un valor a alfa1
     Xkk = double(Xkk);
-    
-    disp(Xkk);
     %Decider en 2 vuelve a ejecutar desde paso 0 y recalcula W y Aw a
     %pesar de que no sean vacios
     decider = 2;
