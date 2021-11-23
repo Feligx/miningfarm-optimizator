@@ -1,5 +1,5 @@
 %-----------------------------------------------no lineal-------------------------------------------------------------------------
-myObj = gradiente_proyectado;
+%myObj = gradiente_proyectado;
 %res1 = myObj.func1(a);
 %res2 = myObj.func2(x);
 %y = functionsContainer.func1(2) % 10
@@ -19,6 +19,6 @@ X = X([1:size(matrix_rest,2)]);
 
 vector_variables_x = sym('x', [1 size(matrix_rest,2)]); %Vector fila de las xis
 vector_input = {X b matrix_rest vector_variables_x vector_hashrates vec_desigualdades_orientacion};
-x = myObj.helper_wrapper(vector_input);
+x = helper_wrapper(vector_input);
 
 

@@ -14,7 +14,6 @@ vector_hashrates = M(1:end ,1);
 j= 1;
 vector_aux = zeros(size(vector_hashrates,1)*3,1);
 for i = 1: size(vector_hashrates,1) %Pues son size*3 unos
-    disp(j);
     vector_aux(j,1) = vector_hashrates(i, 1);
     vector_aux(j+1,1) = vector_hashrates(i, 1);
     vector_aux(j+2,1) = vector_hashrates(i, 1);

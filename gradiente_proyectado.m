@@ -89,24 +89,24 @@ classdef gradiente_proyectado
 
         function[Xk] = helper(vector_input)
             f = cell2sym(vector_input(1,1));
-            X0 = cell2mat(vector_input(1,2));            
+            X0 = cell2mat(vector_input(1,2));
             b = cell2mat(vector_input(1,3));
             A = cell2mat(vector_input(1,4));
             vector_variables_x = vector_input(1,5);
             B = [vector_variables_x{:}];
-
+            
             vector_variables_x = B;
             grad_func = cell2sym(vector_input(1,6));
-            vector_hashrate = cell2mat(vector_input(1,7));  
+            vector_hashrate = cell2mat(vector_input(1,7));
             
             W = cell2mat(vector_input(1,8));
             Aw = cell2mat(vector_input(1,9));
             
             vector_desigualdades = cell2mat(vector_input(1,10));
             
-%             if grad_func == []
-%                 grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
-%             end
+            %if grad_func == []
+                %grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
+            %end
             %PASO 0
             if W == [] && Aw == [] %Talvez sea solo un &
                 [W,Aw] = paso_0(X0,b,A);
@@ -127,15 +127,15 @@ classdef gradiente_proyectado
             elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
                 Aw = [];
                 W = [];
-                vector_input = {f X b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades};  
+                vector_input = {f X b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades};
                 helper(vector_input) %Ver como actualizo Aw, W y Xk
             else %Es decir vuelve a iterar por los mius redifiniendo el w en este caso no debe hacer que vuelvan a calcular el A y el W
-                vector_input = {f X b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades};  
+                vector_input = {f X b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades};
                 helper(vector_input) %Ver como actualizo Aw, W y Xk
             end
             %PASO 2
             %-------------------------------------------------------------------------
-        end   
+        end
         %vector_desigualdades que es un vector columna
         function[X_optimo] = helper_wrapper(vector_input)
             X = cell2mat(vector_input(1,1));            
