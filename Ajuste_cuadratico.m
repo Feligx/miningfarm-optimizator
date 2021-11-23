@@ -2,7 +2,10 @@ function [resultado] = Ajuste_cuadratico(f, x, e)
 %f es la funcion a aproximar, x es el vector de 3 puntos de los rangos
 %propios del metodo los cuales son 0, alpha1/2 y alpha1 (analogamente se hace lo mismo con alpha 2)
 % y e es el error minimo al que queremos aproximarnos
-
+    disp("Función");
+    disp(f);
+    disp("Final Funcion");
+    
     b_23 = x(1,2)^2-x(1,3)^2;
     b_31 = x(1,3)^2-x(1,1)^2;
     b_12 = x(1,1)^2-x(1,2)^2;

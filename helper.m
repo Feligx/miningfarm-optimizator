@@ -30,13 +30,13 @@ end
 %-------------------------------------------------------------------------
 %PASO 1
 direccion = [];
-direccion = paso_1(Aw,grad_func);
+direccion = paso_1(Aw,grad_func, vector_variables_x, X0);
 %PASO 1
 %-------------------------------------------------------------------------
 %PASO 2
 decider = 0;
 Xk = 0;
-[decider,Xk,W,Aw] = paso_2(direccion,grad_func,W,Aw,A,X0,b,vector_hashrate, matrix_rest, vec_desigualdades_orientacion); %Asumiendo que vector_hashrate_triplicado es un vector fila
+[decider,Xk,W,Aw] = paso_2(f, direccion,grad_func,W,Aw,A,X0,b,vector_hashrate, matrix_rest, vec_desigualdades_orientacion, vector_variables_x); %Asumiendo que vector_hashrate_triplicado es un vector fila
 if decider == 1
     return %Definirlo para que lo tome de paso 2
 elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk

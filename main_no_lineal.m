@@ -21,4 +21,3 @@ vector_variables_x = sym('x', [1 size(matrix_rest,2)]); %Vector fila de las xis
 vector_input = {X b matrix_rest vector_variables_x vector_hashrates vec_desigualdades_orientacion, matrix_rest, vec_desigualdades_orientacion};
 x = helper_wrapper(vector_input);
 
-
