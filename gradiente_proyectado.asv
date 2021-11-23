@@ -87,10 +87,26 @@ classdef gradiente_proyectado
            end
         end
 
-        function[Xk] = helper(f,X0,b,A,vector_variables_x,vector_hashrate,grad_func, W, Aw,vector_desigualdades)
-            if grad_func == []
-                grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
-            end
+        function[Xk] = helper(vector_input)
+            f = cell2sym(vector_input(1,1));
+            X0 = cell2mat(vector_input(1,2));            
+            b = cell2mat(vector_input(1,3));
+            A = cell2mat(vector_input(1,4));
+            vector_variables_x = vector_input(1,5);
+            B = [vector_variables_x{:}];
+
+            vector_variables_x = B;
+            grad_func = cell2sym(vector_input(1,6));
+            vector_hashrate = cell2mat(vector_input(1,7));  
+            
+            W = cell2mat(vector_input(1,8));
+            Aw = cell2mat(vector_input(1,9));
+            
+            vector_desigualdades = cell2mat(vector_input(1,10));
+            
+%             if grad_func == []
+%                 grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
+%             end
             %PASO 0
             if W == [] && Aw == [] %Talvez sea solo un &
                 [W,Aw] = paso_0(X0,b,A);
@@ -105,7 +121,7 @@ classdef gradiente_proyectado
             %PASO 2
             decider = 0;
             Xk = 0;
-            decider,Xk,W,Aw = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualdades,b,vector_hashrate); %Asumiendo que vector_hashrate_triplicado es un vector fila
+            [decider,Xk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualdades,b,vector_hashrate); %Asumiendo que vector_hashrate_triplicado es un vector fila
             if decider == 1
                 return %Definirlo para que lo tome de paso 2
             elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
@@ -125,16 +141,22 @@ classdef gradiente_proyectado
             A = cell2mat(vector_input(1,3));
             vector_variables_x = vector_input(1,4);
             B = [vector_variables_x{:}];
-            disp()
+
+            vector_variables_x = B;
+            
             vector_hashrate = cell2mat(vector_input(1,5));  
             vector_desigualdades = cell2mat(vector_input(1,6));
             f = 0;
             grad_func = [];
             for i=1: (size(vector_variables_x,2))
-                disp(f);
-                f = f + X(1,i)*log(X(1,i)*vector_hashrate(1,i));
+                f = f + vector_variables_x(1,i)*log(vector_variables_x(1,i)+vector_hashrate(i,1));
             end %Define la funcion objetivo
-            X_optimo = helper(f,X,b,A,vector_variables_x,vector_hashrate,grad_func,vector_desigualdades);
+            grad_func = gradient(f);
+            W = [];
+            Aw = [];
+            vector_input = {f X b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades};  
+            disp(vector_input);
+            X_optimo = helper(f, X, b, A, vector_variables_x, vector_hashrate, grad_func, W, Aw, vector_desigualdades);
             return
         end
     end
