@@ -42,20 +42,22 @@ else
     end
     %Alfa1
     vector_col_func_rest = transpose(vector_col_func_rest);
-%     disp("Restricciones")
-%     disp(vector_col_func_rest);
-%     disp("Fin restricciones")
+    
+    
+    
+    disp("Restricciones")
+    disp(vector_col_func_rest);
+    disp("Fin restricciones")
     
     alfas1_encontrado = solve(vector_col_func_rest,'ReturnConditions',true); %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
     a = alfas1_encontrado.conditions;%Es el intervalo que cumple todas las rest.
     
-    a = vpa(a);
-    disp(a);
+    disp(alfas1_encontrado.conditions);
     
-    if class(a) == "sym"
-        msg = "Alfa1 es igual a 0";
-        error(msg);
-    end
+%     if class(a) == "sym"
+%         msg = "Alfa1 es igual a 0";
+%         error(msg);
+%     end
     
     
 %      cell = cellstr(string(a));
@@ -77,9 +79,7 @@ else
     %vec_limites = [3 a/2 a];
     %alfa2_encontrado = Ajuste_cuadratico(vpa(subs(f,vector_variables_x,Xkk_temp')), vec_limites, 0.001);
     fun = matlabFunction(vpa(subs(f,vector_variables_x,Xkk_temp')));
-    x0 = 0;
-    A = [1;-1];
-    b= [num_alfa11, 0];
+    a = 1;
     alfa2_encontrado = fminbnd(fun,0,a);
     
     fplot(fun);
@@ -87,6 +87,8 @@ else
 %     disp(alfa2_encontrado);
     Xkk = X0 + (alfa2_encontrado*direccion); %Ya le damos un valor a alfa1
     Xkk = double(Xkk);
+    
+    disp(Xkk);
     %Decider en 2 vuelve a ejecutar desde paso 0 y recalcula W y Aw a
     %pesar de que no sean vacios
     decider = 2;

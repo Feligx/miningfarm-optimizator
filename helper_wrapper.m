@@ -19,8 +19,8 @@ for i=1: (size(vector_variables_x,2))
     f = f + vector_variables_x(1,i)*log(vector_variables_x(1,i)+vector_hashrate(i,1));
 end %Define la funcion objetivo
 
-f = taylor(f,vector_variables_x, 12);
-%disp(f)
+f = vpa(taylor(f,vector_variables_x, 12));
+disp(f)
 grad_func = gradient(f);
 W = [];
 Aw = [];

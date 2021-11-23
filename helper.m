@@ -25,9 +25,8 @@ vec_desigualdades_orientacion = cell2mat(vector_input(1,12));
 %grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
 %end
 %PASO 0
-if isempty(W) && isempty(Aw) %Talvez sea solo un &
-    [W,Aw] = paso_0(X0,b,A);
-end
+%Talvez sea solo un &
+[W,Aw] = paso_0(X0,b,A);
 %PASO 0
 %-------------------------------------------------------------------------
 %PASO 1

@@ -11,5 +11,5 @@ for i=1 :size(A,1) %Pues es una rest por columna
         W = [W i];
     end
 end
-%disp(W);
+disp(W);
 return
