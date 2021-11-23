@@ -23,7 +23,6 @@ if direccion == 0
 else
     Xkk_temp = X0 + (alfa1*direccion);%Como alfa es simbolica matlab la usa como variable
     %vector_col_func_rest = A*Xkk_temp; %Esto puede estar mal pues puede tomarlo como producto de vectores
-    disp(Xkk_temp);
     vector_col_func_rest = matrix_rest*Xkk_temp;
     for i=1 :size(vec_desigualdades_orientacion,1) %Las desigualdades saben cuantas rest hay
         if vec_desigualdades_orientacion(i,1) == 1 %<=
@@ -36,7 +35,7 @@ else
     end
     %Alfa1
     vector_col_func_rest = transpose(vector_col_func_rest);
-    alfas1_encontrado = solve(vector_col_func_rest,'ReturnConditions',true); %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
+    alfas1_encontrado = solve(vector_col_func_rest,'ReturnConditions',True); %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
     a = alfas1_encontrado.conditions;%Es el intervalo que cumple todas las rest.
     cell = cellstr(string(a));
     num_alfa11 = str2double(extractAfter(cell{1}, strlength(cell{1})-1)); %Alfamax cota para alfa2

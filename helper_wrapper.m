@@ -9,6 +9,10 @@ vector_variables_x = B;
 
 vector_hashrate = cell2mat(vector_input(1,5));
 vector_desigualdades = cell2mat(vector_input(1,6));
+matrix_rest = cell2mat(vector_input(1,7));
+
+vec_desigualdades_orientacion = cell2mat(vector_input(1,8));
+
 f = 0;
 grad_func = [];
 for i=1: (size(vector_variables_x,2))
@@ -17,7 +21,7 @@ end %Define la funcion objetivo
 grad_func = gradient(f);
 W = [];
 Aw = [];
-vector_input = {f X b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades};
+vector_input = {f X b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades, matrix_rest, vec_desigualdades_orientacion};
 %disp(vector_input);
 X_optimo = helper(vector_input);
 return

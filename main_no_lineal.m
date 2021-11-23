@@ -6,7 +6,7 @@
 
 
 
-%Esto es un vecor columna con m filas
+%Esto es un vecor columnclca con m filas
 
 % BB = num2cell(vector_col_func_rest);
 % BBB = reshape( horzcat(BB{:}), size(BB,1), []);
@@ -18,7 +18,7 @@
 X = X([1:size(matrix_rest,2)]);
 
 vector_variables_x = sym('x', [1 size(matrix_rest,2)]); %Vector fila de las xis
-vector_input = {X b matrix_rest vector_variables_x vector_hashrates vec_desigualdades_orientacion};
+vector_input = {X b matrix_rest vector_variables_x vector_hashrates vec_desigualdades_orientacion, matrix_rest, vec_desigualdades_orientacion};
 x = helper_wrapper(vector_input);
 
 

@@ -15,6 +15,10 @@ Aw = cell2mat(vector_input(1,9));
 
 vector_desigualdades = cell2mat(vector_input(1,10));
 
+matrix_rest = cell2mat(vector_input(1,11));
+
+vec_desigualdades_orientacion = cell2mat(vector_input(1,12));
+
 %if grad_func == []
 %grad_func = gradient(f,vector_variables_x); %Encuentra el gradiente respecto a las variables del vector x
 %end
@@ -32,7 +36,7 @@ direccion = paso_1(Aw,grad_func);
 %PASO 2
 decider = 0;
 Xk = 0;
-[decider,Xk,W,Aw] = paso_2(f,direccion,grad_func,W,Aw,A,X0,vector_desigualdades,b,vector_hashrate); %Asumiendo que vector_hashrate_triplicado es un vector fila
+[decider,Xk,W,Aw] = paso_2(direccion,grad_func,W,Aw,A,X0,b,vector_hashrate, matrix_rest, vec_desigualdades_orientacion); %Asumiendo que vector_hashrate_triplicado es un vector fila
 if decider == 1
     return %Definirlo para que lo tome de paso 2
 elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
