@@ -8,6 +8,8 @@ Awtt = inv(Aw*Awt);
 Xkk_temp = 0;
 if direccion == 0
     miu = -Awtt*Awt*vpa(subs(grad_func,vector_variables_x, transpose(X0))); %No se si es Awt o Aw confirmar
+    disp(miu);
+    
     if miu >= 0 % Aqui paramos la ejecucion
         disp('Fin de la ejecucion por miu');
         decider = 1;
@@ -25,9 +27,13 @@ else
     %vector_col_func_rest = A*Xkk_temp; %Esto puede estar mal pues puede tomarlo como producto de vectores
     vector_col_func_rest = matrix_rest*Xkk_temp;
     
-    disp("X + alfa*d");
-    disp(Xkk_temp);
-    disp("Fin X + alfa*d");
+    disp("Rest");
+    disp(matrix_rest*Xkk_temp);
+    disp("Rest");
+%     
+%     disp("X + alfa*d");
+%     disp(Xkk_temp);
+%     disp("Fin X + alfa*d");
     for i=1 :size(vec_desigualdades_orientacion,1) %Las desigualdades saben cuantas rest hay
         if vec_desigualdades_orientacion(i,1) == 1 %<=
             vector_col_func_rest(i,:) = [vector_col_func_rest(i,1:end) <= b(i,1)]; %Creo que toca transponer vector func rest antes de pasarlo a solve por la sintax
@@ -39,29 +45,24 @@ else
     end
     %Alfa1
     vector_col_func_rest = transpose(vector_col_func_rest);
-    disp("Restricciones")
-    disp(vector_col_func_rest);
-    disp("Fin restricciones")
+%     disp("Restricciones")
+%     disp(vector_col_func_rest);
+%     disp("Fin restricciones")
     
     alfas1_encontrado = solve(vector_col_func_rest,'ReturnConditions',true); %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
     a = alfas1_encontrado.conditions;%Es el intervalo que cumple todas las rest.
     
     a = vpa(a);
-    
     disp(a);
     
-    a = 3;
-
-
     
-%     cell = cellstr(string(a));
-%     str_alfa11 = extractAfter(cell{1}, "z <= "); %Alfamax cota para alfa2
-%     disp(str_alfa11);
-%     num_alfa11 = str2double(extractBefore(str_alfa11," <= z"));
-%     disp(num_alfa11)
-%     disp("Alfa1");
-%     disp(num_alfa11);
-%     disp("Fin alfa1");
+%      cell = cellstr(string(a));
+%      str_alfa11 = extractAfter(cell{1}, "z <= "); %Alfamax cota para alfa2
+%      disp(str_alfa11);
+%      num_alfa11 = str2double(extractBefore(str_alfa11," <= z"));
+%      disp("Alfa1");
+%      disp(num_alfa11);
+%      disp("Fin alfa1");
 
     
     %Alfa2
@@ -76,13 +77,14 @@ else
     fun = matlabFunction(vpa(subs(f,vector_variables_x,Xkk_temp')));
     x0 = 0;
     A = [1;-1];
-    b= [a, 0];
+    b= [num_alfa11, 0];
     alfa2_encontrado = fminsearch(fun,x0);
     
-    fplot(fun);
+    fplot(fun);clc
     %alfa2_encontrado = alfa2_encontrado.conditions
-    disp(alfa2_encontrado);
+%     disp(alfa2_encontrado);
     Xkk = X0 + (alfa2_encontrado*direccion); %Ya le damos un valor a alfa1
+    Xkk = double(Xkk);
     %Decider en 2 vuelve a ejecutar desde paso 0 y recalcula W y Aw a
     %pesar de que no sean vacios
     decider = 2;

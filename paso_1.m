@@ -4,11 +4,11 @@ Awt = transpose(Aw);
 Awtt = inv(Aw*Awt);
 proyector = I - (Awt * Awtt) * Aw;
 
-disp(proyector);
+% disp(proyector);
 
 %disp(grad_func);
 direccion = -proyector * vpa(subs(grad_func,vector_variables_x, transpose(X0))); %gradiente evaluado en X0
-disp("Direccion")
-disp(direccion)
-disp("Final direccion")
+% disp("Direccion")
+% disp(direccion)
+% disp("Final direccion")
 end

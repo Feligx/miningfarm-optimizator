@@ -1,4 +1,6 @@
 function[Xk] = helper(vector_input)
+k=1;
+disp(k);
 f = cell2sym(vector_input(1,1));
 X0 = cell2mat(vector_input(1,2));
 b = cell2mat(vector_input(1,3));
@@ -43,9 +45,12 @@ elseif decider == 0 %Itera luego de haber encontrado el nuevo punto Xk
     Aw = [];
     W = [];
     vector_input = {f Xk b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades, matrix_rest, vec_desigualdades_orientacion};
+    k=k+1;
     helper(vector_input) %Ver como actualizo Aw, W y Xk
 else %Es decir vuelve a iterar por los mius redifiniendo el w en este caso no debe hacer que vuelvan a calcular el A y el W
     vector_input = {f Xk b A vector_variables_x vector_hashrate grad_func W Aw vector_desigualdades, matrix_rest, vec_desigualdades_orientacion};
+%     disp(vector_input);
+    k=k+1;
     helper(vector_input) %Ver como actualizo Aw, W y Xk
 end
 %PASO 2
