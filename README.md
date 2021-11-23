@@ -45,6 +45,15 @@ All the data used was taken from the internet and could be deprecated in some fu
 
 All the data used was obtained from [Whattomine](https://whattomine.com/gpus?nvidia=true&amd=true&filter=all) website that contains iformation about some GPUs and the variables we used for the proyect.
 
+From here we used three coins that are the ones with more information on that website for all the listed machines:
+
+<p align="center" width="100%">
+    <img width="33%" src="https://raw.githubusercontent.com/Feligx/miningfarm-optimizator/main/coins_small.png">
+</p>
+<p align="center" width="100%">
+  Etherum, Flux & Nicehash ethash
+</p>
+
 The [.csv](https://github.com/Feligx/miningfarm-optimizator/blob/main/crypto-data-vals.csv) file has all the data we need in the format the tool requires, the columns of the file are explained below:
 
 * **CSV data example**:
