@@ -2,7 +2,7 @@
 
 This project proposes to find optimums to different aspects of the practice of large-scale cryptocurrency mining, i.e. cryptocurrency farms, by analyzing the different aspects surrounding it and finding situations in which it would be useful to optimize the different variables of the problem.
 
-The project is going to be aproached from two different perspectives considering a base problem, a linear and a non-linear one using different algorithms to optimize the proposed situation to the problem.
+The project is going to be aproached from two different perspectives considering a base problem, a linear and a non-linear one, using different algorithms to optimize the proposed situation to the problem.
 
 
 ## Problem
