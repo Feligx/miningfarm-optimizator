@@ -27,9 +27,6 @@ else
     %vector_col_func_rest = A*Xkk_temp; %Esto puede estar mal pues puede tomarlo como producto de vectores
     vector_col_func_rest = matrix_rest*Xkk_temp;
     
-    disp("Rest");
-    disp(matrix_rest*Xkk_temp);
-    disp("Rest");
 %     
 %     disp("X + alfa*d");
 %     disp(Xkk_temp);
@@ -55,6 +52,11 @@ else
     a = vpa(a);
     disp(a);
     
+    if class(a) == "sym"
+        msg = "Alfa1 es igual a 0";
+        error(msg);
+    end
+    
     
 %      cell = cellstr(string(a));
 %      str_alfa11 = extractAfter(cell{1}, "z <= "); %Alfamax cota para alfa2
@@ -78,9 +80,9 @@ else
     x0 = 0;
     A = [1;-1];
     b= [num_alfa11, 0];
-    alfa2_encontrado = fminsearch(fun,x0);
+    alfa2_encontrado = fminbnd(fun,0,a);
     
-    fplot(fun);clc
+    fplot(fun);
     %alfa2_encontrado = alfa2_encontrado.conditions
 %     disp(alfa2_encontrado);
     Xkk = X0 + (alfa2_encontrado*direccion); %Ya le damos un valor a alfa1

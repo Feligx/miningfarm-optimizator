@@ -1,6 +1,6 @@
 function[Xk] = helper(vector_input)
 k=1;
-disp(k);
+%disp(k);
 f = cell2sym(vector_input(1,1));
 X0 = cell2mat(vector_input(1,2));
 b = cell2mat(vector_input(1,3));
