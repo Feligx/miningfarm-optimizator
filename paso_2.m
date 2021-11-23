@@ -79,7 +79,7 @@ else
     %vec_limites = [3 a/2 a];
     %alfa2_encontrado = Ajuste_cuadratico(vpa(subs(f,vector_variables_x,Xkk_temp')), vec_limites, 0.001);
     fun = matlabFunction(vpa(subs(f,vector_variables_x,Xkk_temp')));
-    a = 1
+    a = 1;
     alfa2_encontrado = fminbnd(fun,0,a);
     
     fplot(fun);
