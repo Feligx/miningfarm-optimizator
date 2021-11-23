@@ -18,7 +18,7 @@ The following are the variables that were used in the tool:
 * Energy consumption 
   >calculated using the wattage of the GPUs and the usage hours, by the formula `energy = (Wattage/1000)*Hours`
 * Daily profit from each coin used
-* Working hour of each individual machine
+* Working time of each individual machine
 * Total of working hours of the farm
 
 **See the [Data](https://github.com/Feligx/miningfarm-optimizator#data) section at the end for the reference of the data**
@@ -43,6 +43,20 @@ All the data used was taken from the internet and could be deprecated in some fu
 
 ### - Data
 
-All the data used was obtained from [Whattomine](https://whattomine.com/gpus?nvidia=true&amd=true&filter=all)
+All the data used was obtained from [Whattomine](https://whattomine.com/gpus?nvidia=true&amd=true&filter=all) website that contains iformation about some GPUs and the variables we used for the proyect.
 
+The [.csv](https://github.com/Feligx/miningfarm-optimizator/blob/main/crypto-data-vals.csv) file has all the data we need in the format the tool requires, the columns of the file are explained below:
+
+* **CSV data example**:
+
+| **Hash Rate (h/s)**  | **Wattage (W)** | **Coin 1 profit** | **Coin 2 profit** | **Coin 3 profit** | **Energy consumption** | **Working time (hours)** |
+| :-------------: | :-------------: | :-------------: | :-------------: |  :-------------: | :-------------: | :-------------: |
+| 114  | 15.11  | 8.5 | 8.74 | 8.27 | 0.015 | 11 |
+| 93  | 18.7  | 5.95 | 7.28 | 6.89 | 0.018 | 21 |
+
+> Note that each row of the csv represents the data of one machine, and this example should be used to format new data to add to the tool.
+
+## Attribution
+
+This proyect couldn't be possible without the help and effort of the team, we hope you enjoy and find usefull the proyect!
 
