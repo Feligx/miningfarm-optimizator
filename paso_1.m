@@ -4,7 +4,7 @@ Awt = transpose(Aw);
 Awtt = inv(Aw*Awt);
 proyector = I - ( Awt * Awtt * Aw);
 %disp(grad_func);
-direccion = -proyector * subs(grad_func,vector_variables_x, transpose(X0));
+direccion = -proyector * vpa(subs(grad_func,vector_variables_x, transpose(X0)));
 disp("Direccion")
 disp(direccion)
 disp("Final direccion")

@@ -43,14 +43,19 @@ else
     alfas1_encontrado = solve(vector_col_func_rest,'ReturnConditions',true); %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
     a = alfas1_encontrado.conditions;%Es el intervalo que cumple todas las rest.
     
-    cell = cellstr(string(a));
-    str_alfa11 = extractAfter(cell{1}, "z <= "); %Alfamax cota para alfa2
-    disp(str_alfa11);
-    num_alfa11 = str2double(extractBefore(str_alfa11," <= z"));
-    disp(num_alfa11);
-    disp("Alfa1");
-    disp(num_alfa11);
-    disp("Fin alfa1");
+    a = vpa(a);
+    
+    disp(a);
+
+    
+%     cell = cellstr(string(a));
+%     str_alfa11 = extractAfter(cell{1}, "z <= "); %Alfamax cota para alfa2
+%     disp(str_alfa11);
+%     num_alfa11 = str2double(extractBefore(str_alfa11," <= z"));
+%     disp(num_alfa11)
+%     disp("Alfa1");
+%     disp(num_alfa11);
+%     disp("Fin alfa1");
 
     
     %Alfa2
