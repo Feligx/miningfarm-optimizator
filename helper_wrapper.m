@@ -20,7 +20,6 @@ for i=1: (size(vector_variables_x,2))
 end %Define la funcion objetivo
 
 f = vpa(taylor(f,vector_variables_x, 12));
-disp(f)
 grad_func = gradient(f);
 W = [];
 Aw = [];

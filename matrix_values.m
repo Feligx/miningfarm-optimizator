@@ -1,4 +1,4 @@
-50%La matriz M tiene 7 columnas: hashrate, wats,proftit-flux,NICE
+%La matriz M tiene 7 columnas: hashrate, wats,proftit-flux,NICE
 %HASH-ETHASH,horas de trabajo de cada maquina
 %proftit-eth,proftit-Nice hash
 %M = readmatrix(input(prompt,'s')) %Debe estar en la misma carpeta
