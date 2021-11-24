@@ -44,20 +44,17 @@ else
     vector_col_func_rest = transpose(vector_col_func_rest);
     
     
-    
-    disp("Restricciones")
-    disp(vector_col_func_rest);
-    disp("Fin restricciones")
+   
     
     alfas1_encontrado = solve(vector_col_func_rest,'ReturnConditions',true); %Pues debo especificar con respecto a que variable esta resolviendo como solo es esa talvez no sea necesario
     a = alfas1_encontrado.conditions;%Es el intervalo que cumple todas las rest.
     
     disp(alfas1_encontrado.conditions);
     
-%     if class(a) == "sym"
-%         msg = "Alfa1 es igual a 0";
-%         error(msg);
-%     end
+    if class(a) == "sym"
+        msg = "Alfa1 es igual a 0";
+        error(msg);
+    end
     
     
 %      cell = cellstr(string(a));
