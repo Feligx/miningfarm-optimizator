@@ -38,7 +38,7 @@ The following are considerations to have when trying the tool.
 
 ### - Disclaimer
 
-This is a simulator, and should not be treated as a diciding tool for real miners in order to use their GPUs.
+This is a simulator, and should not be treated as a deciding tool for real miners in order to use their GPUs.
 All the data used was taken from the internet and could be deprecated in some future, so if you try the tool be sure to have the data you want.
 
 ### - Data
